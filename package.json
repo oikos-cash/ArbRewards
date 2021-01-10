@@ -1,0 +1,17 @@
+{
+  "name": "arbrewarder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bignumber.js": "^9.0.1",
+    "tronweb": "^3.2.2",
+    "web3": "^1.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
