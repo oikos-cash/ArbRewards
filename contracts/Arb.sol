@@ -38,6 +38,8 @@ contract ArbRewarder is SelfDestructible, Pausable {
     address public WTRX_TOKEN = 0x891cdb91d149f23B1a45D9c5Ca78a88d0cB44C18;
     address public sTRX_TOKEN = 0x15DDbaD15288f96F5Cf0B068b0e187ecCBc0Aa0B;
     address public EXCHANGE_RATES = 0x609938ef4EaEd907d8A76fa867cd7e25Adb03669;
+
+    /* Constants */
     uint public WTRX_DECIMALS = 6;
     uint public sTRX_DECIMALS = 18;
 
