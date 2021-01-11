@@ -123,8 +123,12 @@ contract ArbRewarder is SelfDestructible, Pausable {
         uint min_strx_bought = expectedOutput(trx_to_convert)[1];
         uint tokens_bought =  uniswapRouter.swapExactTRXForTokens.value(trx_to_convert)(min_strx_bought, getPathForTRXtoToken(), address(this), now+600)[1];
 
+        //discount factor
+        uint discount_factor = (1*10**18-(trx_in_uniswap/strx_in_uniswap));
+
+
     	// Reward caller 
-        uint reward_tokens = rewardCaller(tokens_bought, unspent_input, trx_to_convert);
+        uint reward_tokens = rewardCaller(tokens_bought, unspent_input, trx_to_convert, discount_factor);
         return reward_tokens;
     }
 
@@ -154,7 +158,7 @@ contract ArbRewarder is SelfDestructible, Pausable {
 
     /* ========== PRIVATE FUNCTIONS ========== */
 
-    function rewardCaller(uint bought, uint unspent_input, uint trx_to_convert)
+    function rewardCaller(uint bought, uint unspent_input, uint trx_to_convert, uint discount_factor)
         private
         returns
         (uint reward_tokens)
@@ -164,7 +168,7 @@ contract ArbRewarder is SelfDestructible, Pausable {
         uint trx_rate = exchangeRates.rateForCurrency("sTRX");
 
         reward_tokens = ( ((trx_to_convert * 10**(sTRX_DECIMALS-WTRX_DECIMALS)) * trx_rate) / oks_rate);
-        uint reward_bonus = reward_tokens * 75 / 100;
+        uint reward_bonus = reward_tokens * discount_factor / 100;
         reward_tokens = reward_tokens + reward_bonus;
 
          //trx_rate.multiplyDecimal(bought).divideDecimal(oks_rate) ;
