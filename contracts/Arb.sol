@@ -124,10 +124,10 @@ contract ArbRewarder is SelfDestructible, Pausable {
         uint tokens_bought =  uniswapRouter.swapExactTRXForTokens.value(trx_to_convert)(min_strx_bought, getPathForTRXtoToken(), address(this), now+600)[1];
 
         //discount factor
-        uint discount_factor = strx_in_uniswap / trx_in_uniswap;
+        uint bonus_factor = strx_in_uniswap / trx_in_uniswap;
 
     	// Reward caller 
-        uint reward_tokens = rewardCaller(tokens_bought, unspent_input, trx_to_convert, discount_factor);
+        uint reward_tokens = rewardCaller(tokens_bought, unspent_input, trx_to_convert, bonus_factor);
         return reward_tokens;
     }
 
@@ -154,7 +154,7 @@ contract ArbRewarder is SelfDestructible, Pausable {
 
     /* ========== PRIVATE FUNCTIONS ========== */
 
-    function rewardCaller(uint bought, uint unspent_input, uint trx_to_convert, uint discount_factor)
+    function rewardCaller(uint bought, uint unspent_input, uint trx_to_convert, uint bonus_factor)
         private
         returns
         (uint reward_tokens)
@@ -164,7 +164,7 @@ contract ArbRewarder is SelfDestructible, Pausable {
         uint trx_rate = exchangeRates.rateForCurrency("sTRX");
 
         reward_tokens = ((trx_to_convert * 10**(sTRX_DECIMALS-WTRX_DECIMALS)) * trx_rate) / oks_rate;
-        uint reward_bonus = reward_tokens / discount_factor;
+        uint reward_bonus = reward_tokens / bonus_factor;
         reward_tokens = reward_tokens + reward_bonus;
         oikos.transfer(msg.sender, reward_tokens);
 
